@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>哆点校园登录工具</title>
+    <meta name="author" content="Pluto">
+    <script src="static/js/vue.min.js"></script>
+    <link rel="stylesheet" href="static/mdui-v1.0.2/css/mdui.min.css" />
+    <script src="static/mdui-v1.0.2/js/mdui.min.js">
+    </script>
+    <link rel="stylesheet" href="static/spop/spop.min.css">
+    </link>
+    <script src="static/spop/spop.min.js"></script>
+
+    <link rel="stylesheet" href="static/style.css">
+    <script>
+        document.write('<link href="static/style.css?v=' + new Date().getTime() +
+            '" rel="stylesheet" type="text/css"/>');
+    </script>
+</head>
+
+<body>
+    <div id="app" class="mdui-container">
+
+        <div class="mdui-progress" v-show="loading">
+            <div class="mdui-progress-indeterminate"></div>
+        </div>
+        <div class="mdui-card panel">
+
+            <div class="mdui-card-content">
+
+                <div class="mdui-tab mdui-tab-centered" mdui-tab>
+                    <a href="#tab-login" class="mdui-ripple">Home</a>
+                    <a href="#tab-info" class="mdui-ripple">Info</a>
+                </div>
+                <div id="tab-login">
+                    <div>
+                        <h3>登录工具</h3>
+                    </div>
+                    认证状态：
+                    <div class="mdui-chip" span v-if="status">
+                        <span class="mdui-chip-icon mdui-color-green"><i
+                                class="mdui-icon material-icons">face</i></span>
+                        <span class="mdui-chip-title">已登录，{{logged.uid}}</span>
+                    </div>
+                    <div class="mdui-chip" v-else>
+                        <span class="mdui-chip-icon mdui-color-gray"><i class="mdui-icon material-icons">face</i></span>
+                        <span class="mdui-chip-title">未登录</span>
+                    </div>
+                    <div class="mdui-textfield">
+                        <label class="mdui-textfield-label">账号</label>
+                        <input class="mdui-textfield-input" type="text" v-model="username" />
+                    </div>
+                    <div class="mdui-textfield">
+                        <label class="mdui-textfield-label">密码</label>
+                        <input class="mdui-textfield-input" type="text" v-model="password" />
+                    </div>
+                    <div class="radio">
+
+                        <label class="mdui-radio">
+                            <input type="radio" name="client" v-model="client" value="0" />
+                            <i class="mdui-radio-icon"></i>
+                            PC
+                        </label>
+                        <label class="mdui-radio">
+                            <input type="radio" name="client" v-model="client" value="1" />
+                            <i class="mdui-radio-icon"></i>
+                            Mobile
+                        </label>
+                    </div>
+                    <div class="actions">
+
+                        <button class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-theme-accent"
+                            @click="login">登录</button>
+                        <button class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-theme-accent"
+                            @click="logout">注销</button>
+                        <button class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-theme-accent"
+                            @click="save">保存信息</button>
+                    </div>
+                    <div class="mdui-card-actions" v-if="status">
+                        <div class="mdui-chip">
+                            <span class="mdui-chip-title">内网IP：{{logged.v4ip}}</span>
+                        </div>
+                        <div class="mdui-chip">
+                            <span class="mdui-chip-title">MAC：{{toMac(logged.olmac)}}</span>
+                        </div>
+                    </div>
+                </div>
+                <div id="tab-info">
+                    <ul class="mdui-list">
+                        <li class="mdui-list-item mdui-ripple">
+                            <i class="mdui-list-item-icon mdui-icon material-icons">account_circle</i>
+                            <div class="mdui-list-item-content">用户名：{{logged.uid}}</div>
+                        </li>
+                        <li class="mdui-list-item mdui-ripple">
+                            <i class="mdui-list-item-icon mdui-icon material-icons">access_time</i>
+                            <div class="mdui-list-item-content">已用时间：{{logged.time}}分钟</div>
+                        </li>
+                        <li class="mdui-list-item mdui-ripple">
+                            <i class="mdui-list-item-icon mdui-icon material-icons">cloud</i>
+                            <div class="mdui-list-item-content">已用流量：{{logged.flow/1024}}MByte</div>
+                        </li>
+                        <li class="mdui-list-item mdui-ripple">
+                            <i class="mdui-list-item-icon mdui-icon material-icons">error</i>
+                            <div class="mdui-list-item-content">内网IP：{{logged.v4ip}}</div>
+                        </li>
+                        <li class="mdui-list-item mdui-ripple">
+                            <i class="mdui-list-item-icon mdui-icon material-icons">error</i>
+                            <div class="mdui-list-item-content">MAC地址：{{toMac(logged.olmac)}}</div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        document.write('<script src="static/app.js?v=' + new Date().getTime() + '"><\/script\>');
+    </script>
+</body>
+
+</html>
