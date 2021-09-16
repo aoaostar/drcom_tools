@@ -15,7 +15,7 @@ var vm = new Vue({
             loading: true,
             username: localStorage.getItem('username'),
             password: localStorage.getItem('password'),
-            client: localStorage.getItem('client'),
+            client: localStorage.getItem('client') ? localStorage.getItem('client') : 0,
             logged: {
                 uid: '',
                 v4ip: '',
@@ -163,6 +163,7 @@ var vm = new Vue({
         },
         login() {
 
+
             if (this.status) {
                 this.notify("已登录，无需重复登录")
                 return
@@ -170,7 +171,10 @@ var vm = new Vue({
             if (this.loading) {
                 return
             }
-
+            if (this.username == '' || this.password == '') {
+                this.notify("账号或密码不得为空", 'warning')
+                return
+            }
             this.httpGet(
                     `http://10.254.253.250/drcom/login?callback=drcom&DDDDD=${this.username}&upass=${this.password}&0MKKey=123456&R1=0&R3=0&R6=${this.client}&para=00&v6ip=&R7=0&v=8325`
                 )

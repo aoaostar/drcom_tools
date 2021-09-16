@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -55,7 +56,7 @@
                     </div>
                     <div class="mdui-textfield">
                         <label class="mdui-textfield-label">密码</label>
-                        <input class="mdui-textfield-input" type="text" v-model="password" />
+                        <input class="mdui-textfield-input" type="password" v-model="password" @keyup.enter="login" />
                     </div>
                     <div class="radio">
 
@@ -86,6 +87,11 @@
                         <div class="mdui-chip">
                             <span class="mdui-chip-title">MAC：{{toMac(logged.olmac)}}</span>
                         </div>
+
+                        <div class="mdui-typo mdui-float-right">
+                            <a href="https://github.com/aoaostar/drcom_tools" target="_bank"
+                                class="mdui-ripple">断网使用</a>
+                        </div>
                     </div>
                 </div>
                 <div id="tab-info">
@@ -103,7 +109,7 @@
                             <div class="mdui-list-item-content">已用流量：{{logged.flow/1024}}MByte</div>
                         </li>
                         <li class="mdui-list-item mdui-ripple">
-                            <i class="mdui-list-item-icon mdui-icon material-icons">error</i>
+                            <i class="mdui-list-item-icon mdui-icon material-icons">location_on</i>
                             <div class="mdui-list-item-content">内网IP：{{logged.v4ip}}</div>
                         </li>
                         <li class="mdui-list-item mdui-ripple">
@@ -112,6 +118,7 @@
                         </li>
                     </ul>
                 </div>
+
             </div>
         </div>
     </div>
