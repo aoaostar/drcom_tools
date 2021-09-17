@@ -7,12 +7,53 @@ function toMac(str) {
     let ma = upper.match(reg);
     return ma.join("-");
 }
+
+function is_same_day(startTime, endTime) {
+    const startTimeMs = new Date(startTime).setHours(0, 0, 0, 0);
+    const endTimeMs = new Date(endTime).setHours(0, 0, 0, 0);
+    return startTimeMs === endTimeMs
+}
+
+function format_ago(value) {
+    var theTime = parseInt(value); // 需要转换的时间秒
+    var theTime1 = 0; // 分
+    var theTime2 = 0; // 小时
+    var theTime3 = 0; // 天
+    if (theTime > 60) {
+        theTime1 = parseInt(theTime / 60);
+        theTime = parseInt(theTime % 60);
+        if (theTime1 > 60) {
+            theTime2 = parseInt(theTime1 / 60);
+            theTime1 = parseInt(theTime1 % 60);
+            if (theTime2 > 24) {
+                //大于24小时
+                theTime3 = parseInt(theTime2 / 24);
+                theTime2 = parseInt(theTime2 % 24);
+            }
+        }
+    }
+    var result = '';
+
+    if (theTime3 > 0) {
+        return parseInt(theTime3) + "天";
+    }
+    if (theTime2 > 0) {
+        return parseInt(theTime2) + "小时" + result;
+    }
+    if (theTime1 > 0) {
+        return parseInt(theTime1) + "分" + result;
+    }
+    if (theTime > 0) {
+        return parseInt(theTime) + "秒";
+    }
+}
 var vm = new Vue({
     el: '#app',
     data() {
         return {
             status: false,
             loading: true,
+            apiUrl: localStorage.getItem('apiUrl') ? localStorage.getItem('apiUrl') : 'http://10.254.253.250',
             username: localStorage.getItem('username'),
             password: localStorage.getItem('password'),
             client: localStorage.getItem('client') ? localStorage.getItem('client') : 0,
@@ -21,6 +62,8 @@ var vm = new Vue({
                 v4ip: '',
                 olmac: 'mac',
             },
+            updateLog: [],
+            version: '1.0',
             radiusErrorAry: [
                 "0||SESSION已过期,请重新登录|The SESSION has been expired, please log in again",
                 "0|no errcode|AC认证失败|AC authentication failure",
@@ -74,11 +117,12 @@ var vm = new Vue({
             ]
         }
     },
-    created() {
+    mounted() {
         this.checkStatus()
             .finally(() => {
                 this.loading = false
             })
+        this.getUpdateLog()
     },
     methods: {
         notify(msg, type = 'success') {
@@ -104,15 +148,18 @@ var vm = new Vue({
 
         },
         save() {
+            if (this.username == '' || this.password == '' || this.client == '' || this.apiUrl == '') {
+                this.notify("用户名 or 密码 or 客户端 or 接口地址不得为空！")
+                return
+            }
             localStorage.setItem('username', this.username)
             localStorage.setItem('password', this.password)
             localStorage.setItem('client', this.client)
+            localStorage.setItem('apiUrl', this.apiUrl)
             this.notify("保存成功")
         },
         checkStatus() {
-            // http://10.254.253.250/drcom/chkstatus?callback=dr1002&v=10032
-
-            return this.httpGet('http://10.254.253.250/drcom/chkstatus?callback=drcom&v=10032')
+            return this.httpGet(this.apiUrl + '/drcom/chkstatus?callback=drcom&v=10032')
                 .then((res) => {
                     if (res.result == 1) {
                         this.logged = res
@@ -171,19 +218,17 @@ var vm = new Vue({
             if (this.loading) {
                 return
             }
-            if (this.username == '' || this.password == '') {
-                this.notify("账号或密码不得为空", 'warning')
+            if (this.username == '' || this.password == '' || this.client == '' || this.apiUrl == '') {
+                this.notify("用户名 or 密码 or 客户端 or 接口地址不得为空！",'warning')
                 return
             }
             this.httpGet(
-                    `http://10.254.253.250/drcom/login?callback=drcom&DDDDD=${this.username}&upass=${this.password}&0MKKey=123456&R1=0&R3=0&R6=${this.client}&para=00&v6ip=&R7=0&v=8325`
+                    `${this.apiUrl}/drcom/login?callback=drcom&DDDDD=${this.username}&upass=${this.password}&0MKKey=123456&R1=0&R3=0&R6=${this.client}&para=00&v6ip=&R7=0&v=8325`
                 )
                 .then((res) => {
                     console.log(res.msga)
                     if (res.result == 1) {
-                        localStorage.setItem('username', this.username)
-                        localStorage.setItem('password', this.password)
-                        localStorage.setItem('client', this.client)
+                        this.save()
                         this.notify("登录成功")
                         this.checkStatus()
                     } else {
@@ -193,7 +238,7 @@ var vm = new Vue({
         },
         logout() {
             if (this.status) {
-                this.httpGet('http://10.254.253.250/drcom/logout?callback=drcom&v=885')
+                this.httpGet(this.apiUrl + '/drcom/logout?callback=drcom&v=885')
                     .then((res) => {
                         if (res.result == 1) {
                             this.notify('注销成功，可能一次无法完全注销')
@@ -206,6 +251,20 @@ var vm = new Vue({
 
                 this.notify('未登录，无需注销')
             }
+        },
+        getUpdateLog() {
+            this.loading = true
+            fetch('https://api.github.com/repos/aoaostar/drcom_tools/commits', {
+                method: 'GET',
+                mode: 'cors',
+            }).then((res) => {
+                return res.json()
+            }).then((res) => {
+                this.updateLog = res;
+                console.log(this.updateLog);
+            }).finally((res) => {
+                this.loading = false
+            })
         }
     }
 })
