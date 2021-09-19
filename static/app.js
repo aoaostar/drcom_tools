@@ -56,7 +56,7 @@ var vm = new Vue({
             apiUrl: localStorage.getItem('apiUrl') ? localStorage.getItem('apiUrl') : 'http://10.254.253.250',
             username: localStorage.getItem('username'),
             password: localStorage.getItem('password'),
-            client: localStorage.getItem('client') ? localStorage.getItem('client') : 0,
+            client: localStorage.getItem('client') ? localStorage.getItem('client') : '0',
             logged: {
                 uid: '',
                 v4ip: '',
