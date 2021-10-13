@@ -1,13 +1,13 @@
 /**
  * @author Pluto <i#aoaostar.com>
  */
- 
+
 .panel {
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    min-width: 600px;
+    min-width: 700px;
     margin: auto;
 }
 
@@ -31,4 +31,9 @@
 .actions {
 
     margin: 1rem 0;
+}
+
+.list-ul {
+    height: 60vh;
+    overflow: scroll;
 }

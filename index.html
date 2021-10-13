@@ -6,20 +6,17 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>哆点校园登录工具</title>
+    <link rel="shortcut icon" href="favicon.ico" />
     <meta name="author" content="Pluto">
     <script src="static/js/vue.min.js"></script>
-    <link rel="stylesheet" href="static/mdui-v1.0.2/css/mdui.min.css" />
-    <script src="static/mdui-v1.0.2/js/mdui.min.js">
+    <link rel="stylesheet" type="text/css" href="static/mdui/css/mdui.min.css" />
+    <script src="static/mdui/js/mdui.min.js">
     </script>
     <link rel="stylesheet" href="static/spop/spop.min.css">
     </link>
     <script src="static/spop/spop.min.js"></script>
 
     <link rel="stylesheet" href="static/style.css">
-    <script>
-        document.write('<link href="static/style.css?v=' + new Date().getTime() +
-            '" rel="stylesheet" type="text/css"/>');
-    </script>
 </head>
 
 <body>
@@ -132,27 +129,29 @@
                         <a target="_blank"
                             href="https://github.com/aoaostar/drcom_tools">https://github.com/aoaostar/drcom_tools</a>
                     </div>
-                    <ul class="mdui-list" v-for="(item,index) in updateLog">
-                        <h4 v-if="index==0">
-                            {{new Date(item.commit.committer.date).toDateString()}}
-                        </h4>
-                        <h4
-                            v-if="index!=0 && !is_same_day(item.commit.committer.date,updateLog[index-1].commit.committer.date)">
-                            {{new Date(item.commit.committer.date).toDateString()}}
-                        </h4>
-                        <li class="mdui-list-item mdui-ripple">
-                            <div class="mdui-list-item-avatar"><img :src="item.author.avatar_url" /></div>
-                            <div class="mdui-list-item-content">
-                                <div class="mdui-list-item-title">{{item.commit.message}}</div>
-                                <div class="mdui-list-item-text mdui-list-item-one-line">
-                                    <span
-                                        class="mdui-text-color-theme-text"><strong>{{item.author.login}}</strong></span>
-                                    {{format_ago((new Date().getTime() - new
+                    <ul class="mdui-list list-ul">
+                        <div v-for="(item,index) in updateLog">
+                            <h4 v-if="index==0">
+                                {{new Date(item.commit.committer.date).toDateString()}}
+                            </h4>
+                            <h4
+                                v-if="index!=0 && !is_same_day(item.commit.committer.date,updateLog[index-1].commit.committer.date)">
+                                {{new Date(item.commit.committer.date).toDateString()}}
+                            </h4>
+                            <li class="mdui-list-item mdui-ripple">
+                                <div class="mdui-list-item-avatar"><img :src="item.author.avatar_url" /></div>
+                                <div class="mdui-list-item-content">
+                                    <div class="mdui-list-item-title">{{item.commit.message}}</div>
+                                    <div class="mdui-list-item-text mdui-list-item-one-line">
+                                        <span
+                                            class="mdui-text-color-theme-text"><strong>{{item.author.login}}</strong></span>
+                                        {{format_ago((new Date().getTime() - new
                                     Date(item.commit.committer.date).getTime())/1000)}}前
+                                    </div>
                                 </div>
-                            </div>
-                        </li>
-                        <li class="mdui-divider" v-if="index<updateLog.length-1"></li>
+                            </li>
+                            <li class="mdui-divider" v-if="index<updateLog.length-1"></li>
+                        </div>
                     </ul>
                 </div>
 

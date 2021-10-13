@@ -56,7 +56,7 @@ var vm = new Vue({
             apiUrl: localStorage.getItem('apiUrl') ? localStorage.getItem('apiUrl') : 'http://10.254.253.250',
             username: localStorage.getItem('username'),
             password: localStorage.getItem('password'),
-            client: localStorage.getItem('client') ? localStorage.getItem('client') : 0,
+            client: localStorage.getItem('client') ? localStorage.getItem('client') : '0',
             logged: {
                 uid: '',
                 v4ip: '',
@@ -237,20 +237,15 @@ var vm = new Vue({
                 })
         },
         logout() {
-            if (this.status) {
-                this.httpGet(this.apiUrl + '/drcom/logout?callback=drcom&v=885')
-                    .then((res) => {
-                        if (res.result == 1) {
-                            this.notify('注销成功，可能一次无法完全注销')
-                            this.checkStatus()
-                        } else {
-                            this.notify('注销失败', 'warning');
-                        }
-                    })
-            } else {
-
-                this.notify('未登录，无需注销')
-            }
+            this.httpGet(this.apiUrl + '/drcom/logout?callback=drcom&v=885')
+            .then((res) => {
+                if (res.result == 1) {
+                    this.notify('注销成功，可能一次无法完全注销')
+                    this.checkStatus()
+                } else {
+                    this.notify('注销失败', 'warning');
+                }
+            })
         },
         getUpdateLog() {
             this.loading = true
