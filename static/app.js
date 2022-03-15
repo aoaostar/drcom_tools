@@ -122,7 +122,7 @@ var vm = new Vue({
             .finally(() => {
                 this.loading = false
             })
-        this.getUpdateLog()
+        this.getUpdateLog();
     },
     methods: {
         notify(msg, type = 'success') {
@@ -256,10 +256,9 @@ var vm = new Vue({
                 return res.json()
             }).then((res) => {
                 this.updateLog = res;
-                console.log(this.updateLog);
             }).finally((res) => {
                 this.loading = false
             })
-        }
+        },
     }
 })
