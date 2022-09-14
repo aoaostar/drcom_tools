@@ -221,7 +221,7 @@ var vm = new Vue({
                 return
             }
             this.httpGet(
-                    `${this.apiUrl}/drcom/login?callback=dr1003&DDDDD=${this.username}&upass=${this.password}&0MKKey=123456&R1=0&R2=&R3=0&R6=${this.client}&para=00&v6ip=&terminal_type=1&lang=zh-cn&jsVersion=4.1.3&v=7383&lang=zh`
+                    `${this.apiUrl}/drcom/login?callback=drcom&DDDDD=${this.username}&upass=${this.password}&0MKKey=123456&R1=0&R2=&R3=0&R6=${this.client}&para=00&v6ip=&terminal_type=1&lang=zh-cn&jsVersion=4.1.3&v=7383&lang=zh`
                 )
                 .then((res) => {
                     console.log(res.msga)
