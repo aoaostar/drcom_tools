@@ -3,6 +3,10 @@
 哆点校园登录工具
 * 可模拟手机、电脑登录哆点校园
 
+最新版`Chrome`不支持联网版本使用了  
+需要打开<chrome://flags/#block-insecure-private-network-requests>  
+将`Block insecure private network requests.`项的`Default`改为`Disabled`即可
+
 ### 用途
 * 例如学校限制了一号两台设备：一台电脑一台手机，不允许同时使用两台电脑或者两台手机
 * 那么通过该工具可以实现两台手机或者两台电脑同时在线
@@ -14,8 +18,8 @@
 * <http://www.aoaostar.com/drcom_tools>
 * <http://tool.aoaostar.com/drcom>
 
-> 无网络请到`releases`下载`.apk`文件并且安装（仅支持安卓）  
-> 也可以先使用数据网络加载网页版后再连接WiFi使用
+无网络请到`releases`下载`.apk`文件并且安装（仅支持安卓）    
+也可以先使用数据网络加载网页版后再连接WiFi使用  
 
 * `releases`：<https://github.com/aoaostar/drcom_tools/releases>
 
